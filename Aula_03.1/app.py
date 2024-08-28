@@ -6,6 +6,11 @@ from resources.hotel import Hoteis, Hotel
 app = Flask(__name__)
 api = Api(app)
 
+#rota
+@app.route('/')
+def index():
+    return '<h1> Hotel </h1>'
+
 # rotas
 api.add_resource(Hoteis, '/hoteis')
 api.add_resource(Hotel, '/hoteis/<string:hotel_id>')
