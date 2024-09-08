@@ -10,6 +10,8 @@
 - __REST API__ é um __Web Service__ para se comunicar obrigatoriamente via rede. Todos Web Services são APIs, mas nem todas os APIs são Web Services.
 
 - __O Flask__ é um __microframework__ para __desenvolvimento web__ escrito em Python. É conhecido pela sua simplicidade e flexibilidade, possibilitando a criação de sites, aplicativos web e APIs de forma rápida e eficiente.
+
+- __Rotas__ de acesso são como os endereços específicos que você usa para acessar diferentes recursos
 ---
 
 **Aula_02**
@@ -20,6 +22,11 @@
 **Aula_03**
 
 - __Models__ (modelos): servem como base para definir e gerenciar os dados que fluem através da API, como modelagem de objetos, validação de entrada e integração com banco de dados.
+---
+
+**Aula_03.1**
+
+- Uso de __Resources__ (recursos) e __Models__ (modelos)
 ---
 
 **Aula_04**

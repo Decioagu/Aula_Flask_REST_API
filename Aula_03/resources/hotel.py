@@ -36,7 +36,7 @@ class Hotel(Resource):
 
     # Dados pre definidos (Construtor Local)
     atributos = reqparse.RequestParser() # requerimento (extrair valores)
-    atributos.add_argument('nome') # extrair atributo de nome 'nome'
+    atributos.add_argument('nome', type=str, required=True, help='Campo nome obrigatório') # extrair atributo de nome 'nome'
     atributos.add_argument('estrelas') # extrair atributo de nome 'estrelas'
     atributos.add_argument('diaria') # extrair atributo de nome 'diaria'
     atributos.add_argument('cidade') # extrair atributo de nome 'cidade'

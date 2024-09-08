@@ -14,10 +14,15 @@ api = Api(app)
 # Ler (recurso da rota)
 class Hoteis(Resource):
     def get(self):
-        return {'hoteis': 'meus hoteis'}
+        return {"hotel_id": "Meu Hotel"}
+
+# rota
+@app.route('/')
+def index():
+    return "<h1> Hotel </h1> \n <p>http://127.0.0.1:5000/hoteis</p>"
 
 # rota 
-api.add_resource(Hoteis, '/')
+api.add_resource(Hoteis, '/hoteis')
 
 # execução arquivo principal
 if __name__ == '__main__':
