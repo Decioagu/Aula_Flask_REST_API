@@ -16,12 +16,12 @@
 
 **Aula_02**
 
-- __Resources__ (recursos): representa uma entidade abstrata que expõe dados ou funcionalidades do seu sistema através de URLs. É a base da arquitetura RESTful, que organiza a API em torno de recursos interligados, acessíveis por meio de métodos HTTP padronizados.
+- __Resources__ (recursos): é a base da arquitetura RESTful, que organiza a API em torno de recursos interligados, acesso aos dados por meio de métodos, __regras de negocio__.
 ---
 
 **Aula_03**
 
-- __Models__ (modelos): servem como base para definir e gerenciar os dados que fluem através da API, como modelagem de objetos, validação de entrada e integração com banco de dados.
+- __Models__ (modelos): servem como base para definir e gerenciar os dados que fluem através da API, __modelagem de objetos__ (colunas da tabela).
 ---
 
 **Aula_03.1**
@@ -33,12 +33,14 @@
 
 - __PROJETO HOTEL__
 
+- __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas.
+
 - Arquivos: 
     - __.\models\hotel.py__: (modelos)
     - __.\resources\hotel.py__: CRUD hotel
     - __app.py__: rotas
-    - __config_DB.py__: configuração de __Banco de Dados SQLite__
-    - __sql_alchemy.py__: SQLAlchemy biblioteca de interação com bancos de dados relacionais orientada a objetos
+    - __config_DB.py__: configuração Banco de Dados em __SQLAlchemy__
+    - __sql_alchemy.py__: ORM (Object Relational Mapping) => conexão para Banco de Dados <=
 
 - Operações __(CRUD)__:
     - __CREATE (Criar)__: Insere novos registros em uma tabela do banco de dados.
