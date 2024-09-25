@@ -51,7 +51,7 @@ class SiteModel(banco.Model):
         banco.session.add(self)
         banco.session.commit()
 
-     # método delete
+    # método delete
     def delete_site(self):
 
         # deletar lista de hoteis associado ao "site_id"

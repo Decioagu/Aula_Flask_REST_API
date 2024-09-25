@@ -27,7 +27,6 @@ def verifica_blacklist(self, token):
 @jwt.revoked_token_loader
 def token_de_acesso_invalido(jwt_header, jwt_payload):
     return jsonify({'message': 'Sem acesso ao login.'}), 401
-
 #rota
 @app.route('/')
 def index():
@@ -49,4 +48,4 @@ if __name__ == '__main__':
 
     app.run(debug=True) # instanciar api
 
-# Seção 8
+# Seção 9

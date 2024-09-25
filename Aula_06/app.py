@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+from resources.site import Sites, Site
 from blacklist import BLACKLIST
 from resources.hotel import Hoteis, Hotel
 from resources.usuario import Usuario, CadastroUsuario, UsuarioLogin, UsuarioLogout
@@ -27,6 +28,7 @@ def verifica_blacklist(self, token):
 @jwt.revoked_token_loader
 def token_de_acesso_invalido(jwt_header, jwt_payload):
     return jsonify({'message': 'Sem acesso ao login.'}), 401
+
 #rota
 @app.route('/')
 def index():
@@ -39,6 +41,8 @@ api.add_resource(Usuario, '/usuarios/<int:usuario_id>') # cadastro do usuário
 api.add_resource(CadastroUsuario, '/cadastro') # cadastrar usuário
 api.add_resource(UsuarioLogin, '/login') # acessar cadastro do usuário
 api.add_resource(UsuarioLogout, '/logout') # sair cadastro do usuário
+api.add_resource(Sites, '/sites')
+api.add_resource(Site, '/sites/<string:url>')
 
 # execução arquivo principal
 if __name__ == '__main__':
@@ -48,4 +52,4 @@ if __name__ == '__main__':
 
     app.run(debug=True) # instanciar api
 
-# Seção 9
+# Seção 10

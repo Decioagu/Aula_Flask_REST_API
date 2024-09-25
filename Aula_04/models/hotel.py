@@ -1,15 +1,10 @@
 from sql_alchemy import banco
 
-# atributos a ser enviados
-"""
-class HotelModel(banco.Model):
-    ".Model" Subclasse para definir modelos de banco de dados (herança).
-    (herança) possibilita criação das colunas e tabelas em SQLAlchemy.
-"""
+# modelo: gerenciamento e validação de dados
 class HotelModel(banco.Model):
     # ESCOPO Banco de Dados
     __tablename__ = 'hoteis'
-    hotel_id = banco.Column(banco.String, primary_key = True) # id str via Hesders  
+    hotel_id = banco.Column(banco.String, primary_key = True) # id str via Hesders
     nome = banco.Column(banco.String(80))
     estrelas = banco.Column(banco.Float(precision=1))
     diaria = banco.Column(banco.Float(precision=2))

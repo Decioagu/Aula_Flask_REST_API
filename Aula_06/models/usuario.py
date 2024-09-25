@@ -4,7 +4,7 @@ from sql_alchemy import banco
 class UsuarioModel(banco.Model):
     # ESCOPO Banco de Dados
     __tablename__ = 'usuarios'
-    usuario_id = banco.Column(banco.Integer, primary_key = True, autoincrement=True) # id auto incremento
+    usuario_id = banco.Column(banco.Integer, primary_key = True, autoincrement=True) # id auto incrementado
     login = banco.Column(banco.String(40))
     senha = banco.Column(banco.String(40))
 

@@ -15,3 +15,4 @@ class Config:
     JWT_SECRET_KEY = 'DontTellAnyone' # criptografia (token)
     JWT_BLACKLIST_ENABLED  = True # lista negra de token
 
+

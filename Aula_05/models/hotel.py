@@ -4,7 +4,7 @@ from sql_alchemy import banco
 class HotelModel(banco.Model):
     # ESCOPO Banco de Dados
     __tablename__ = 'hoteis'
-    hotel_id = banco.Column(banco.String, primary_key = True) # id str via Hesders
+    hotel_id = banco.Column(banco.String, primary_key = True) # id str via Hesders 
     nome = banco.Column(banco.String(80))
     estrelas = banco.Column(banco.Float(precision=1))
     diaria = banco.Column(banco.Float(precision=2))

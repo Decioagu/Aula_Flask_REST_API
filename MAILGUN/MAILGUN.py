@@ -7,7 +7,7 @@ MAILGUN_DOMAIN = os.getenv('DOMINIO')
 MAILGUN_API_KEY = os.getenv('CHAVE')
 FROM_TITLE = os.getenv('TITULO')
 FROM_EMAIL = os.getenv('ENVIO')
-MEU_EMAIL = os.getenv('EMAIL')
+MEU_EMAIL = os.getenv('EMAIL_01')
 
 # https://login.mailgun.com/login/
 def envio_de_email():

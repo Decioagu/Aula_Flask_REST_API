@@ -45,7 +45,7 @@ class CadastroUsuario(Resource):
         
         # dados = (Construtor Global).(extrair dados)
         dados = atributos.parse_args()
-        
+
         # (ESCOPO Flask).(método login)(Construtor Global)
         if UsuarioModel.find_by_login(dados['login']):
             return {"mensagem": "Login '{}' já existe!!!".format(dados['login'])}, 200

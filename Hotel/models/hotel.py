@@ -1,8 +1,8 @@
-from sql_alchemy import banco
+from config.sql_alchemy import banco # ORM (Object-Relational Mapping)
 
 # atributos a ser enviados
 class HotelModel(banco.Model):
-    # ESCOPO Banco de Dados
+    # ESCOPO BANCO DE DADOS
     __tablename__ = 'hoteis'
     hotel_id = banco.Column(banco.String, primary_key = True) # id str via Hesders
     nome = banco.Column(banco.String(80))
@@ -16,16 +16,7 @@ class HotelModel(banco.Model):
     back_populates='__tablename__': Este parâmetro é usado para definir a relação bidirecional.
     '''
 
-    # ESCOPO Flask
-    def __init__(self, hotel_id, nome, estrelas, diaria, cidade, site_id):
-        self.hotel_id = hotel_id
-        self.nome = nome
-        self.estrelas = estrelas
-        self.diaria = diaria
-        self.cidade = cidade
-        self.site_id = site_id # Chave estrangeira
-
-    # método json
+    # MÉTODO AUXILIAR JSON ( .resources\hotel.py = GET)
     def json(self):
         return {
             'hotel_id': self.hotel_id,
@@ -35,34 +26,13 @@ class HotelModel(banco.Model):
             'cidade': self.cidade,
             'site_id' : self.site_id # Chave estrangeira
         }
-    
-    # método filtro
-    @classmethod # recebe a própria como argumento "cls"
-    def find_hotel(cls, hotel_id):
 
-        # filtra Banco de dados e retorna 1º resultado
-        hotel = cls.query.filter_by(hotel_id=hotel_id).first()
-
-        if hotel:
-            return hotel
-        else:
-            return False
-
-    # método salvar dados
-    def save_hotel(self):
-        banco.session.add(self)
-        banco.session.commit()
-
-    # método atualizar
-    def update_hotel(self, nome, estrelas, diaria, cidade, site_id):
+    # MÉTODO AUXILIAR CONSTRUTOR (.resources\hotel.py = POST)
+    def __init__(self, hotel_id, nome, estrelas, diaria, cidade, site_id):
+        self.hotel_id = hotel_id
         self.nome = nome
         self.estrelas = estrelas
         self.diaria = diaria
         self.cidade = cidade
         self.site_id = site_id # Chave estrangeira
-
-    # método delete
-    def delete_hotel(self):
-        banco.session.delete(self)
-        banco.session.commit()
-
+    

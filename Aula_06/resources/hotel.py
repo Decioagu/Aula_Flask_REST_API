@@ -1,19 +1,24 @@
 from flask_restful import Resource, reqparse
+from models.site import SiteModel
 from models.hotel import HotelModel
 from flask_jwt_extended import jwt_required
 
-# rota PATH: /hoteis?cidade=Rio de Janeiro&estrelas_min=4&diaria_max=400
+
+
+# rota PATH: /hoteis?cidade=Rio de Janeiro&estrelas_min=4&diaria_max=400&site=1
 class Hoteis(Resource):
 
     # Dados pre definidos (Construtor Local)
     path_params = reqparse.RequestParser() # requerimento (extrair argumentos)
-    path_params.add_argument('cidade', type=str, default="",location='args') # argumentos
+    path_params.add_argument('cidade', type=str, default=None ,location='args') # argumentos
     path_params.add_argument('estrelas_min', type=float, default=0, location='args') # argumentos
     path_params.add_argument('estrelas_max', type=float, default=0, location='args') # argumentos
     path_params.add_argument('diaria_min', type=float, default=0, location='args') # argumentos
     path_params.add_argument('diaria_max', type=float, default=0, location='args') # argumentos
-    path_params.add_argument("itens",type=float, default=3, location="args") # argumentos
-    path_params.add_argument("pagina",type=float, default=1, location="args") # argumentos
+    path_params.add_argument("site", type=float, default=None , location="args") # argumentos
+    path_params.add_argument("itens", type=float, default=3, location="args") # argumentos
+    path_params.add_argument("pagina", type=float, default=1, location="args") # argumentos
+    
     '''
     location='args': Indica que o argumento deve ser extraído dos parâmetros da ".query" na URL. 
     Ou seja, ele será lido da parte da URL que vem após o ponto de interrogação (?). 
@@ -43,6 +48,10 @@ class Hoteis(Resource):
             query = query.filter(HotelModel.diaria >= meus_filtros["diaria_min"])
         if meus_filtros["diaria_max"]:
             query = query.filter(HotelModel.diaria <= meus_filtros["diaria_max"])
+        if meus_filtros["site"]:
+            query = query.filter(HotelModel.site_id == meus_filtros["site"])
+        if meus_filtros["itens"]:
+            query = query.filter(meus_filtros["itens"] == meus_filtros["itens"])
         
         # Paginação
         page = meus_filtros['pagina']
@@ -67,6 +76,7 @@ class Hotel(Resource):
     atributos.add_argument('estrelas', type=float) # argumentos
     atributos.add_argument('diaria', type=float) # argumentos
     atributos.add_argument('cidade', type=str) # argumentos
+    atributos.add_argument('site_id', type=int, required=True, help="Falta id do site") # argumentos (campo obrigatório)
 
     # Solicitar (leitura) por "id"
     def get(self, hotel_id):
@@ -95,6 +105,10 @@ class Hotel(Resource):
             print(dados)
             # novo_hotel = (ESCOPO Flask (hotel_id, (Construtor Local))
             novo_hotel = HotelModel(hotel_id, **dados)
+
+            # SE não existir site_id cadastrado finalize
+            if not SiteModel.find_by_id(dados.get('site_id')):
+                return {'mensagem': 'Para cadastra hotel é necessário site_id valido'}, 400
 
             # (ESCOPO Flask).(método salvar dados)
             novo_hotel.save_hotel() 

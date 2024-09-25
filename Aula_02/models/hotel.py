@@ -1,4 +1,4 @@
-# ESCOPO atributos a ser enviados
+# modelo: gerenciamento e validação de dados
 class HotelModel:
     # ESCOPO Flask
     def __init__(self, hotel_id, nome, estrelas, diaria, cidade) -> None:
@@ -17,3 +17,5 @@ class HotelModel:
             'diaria' : self.diaria,
             'cidade' : self.cidade
         }
+
+# ESCOPO Flask: é modelo de dados permitido para consulta, armazenamento e atualização de dados.   

@@ -15,4 +15,9 @@ class Config:
     JWT_SECRET_KEY = 'DontTellAnyone' # criptografia (token)
     JWT_BLACKLIST_ENABLED  = True # lista negra de token
 
-
+'''
+Outras configurações:
+    'sqlite:///nome_do_banco'
+    'mysql://username:password@localhost:3306/nome_do_banco'
+    'postgresql://username:password@localhost:5432/nome_do_banco'
+'''

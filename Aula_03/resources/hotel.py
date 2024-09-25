@@ -1,123 +1,116 @@
 from flask_restful import Resource, reqparse
+from models.hotel import HotelModel # models
+from config.sql_alchemy import banco # ORM (Object-Relational Mapping)
 
-# (dados hoteis)
-hoteis = [
-        {
-        'hotel_id': 'alpha',
-        'nome': 'Alpha Hotel',
-        'estrelas': 4.3,
-        'diaria': 420.34,
-        'cidade': 'Rio de Janeiro'
-        },
-        {
-        'hotel_id': 'bravo',
-        'nome': 'Bravo Hotel',
-        'estrelas': 4.4,
-        'diaria': 380.90,
-        'cidade': 'Santa Catarina'
-        },
-        {
-        'hotel_id': 'charlie',
-        'nome': 'Charlie Hotel',
-        'estrelas': 3.9,
-        'diaria': 320.20,
-        'cidade': 'Santa Catarina'
-        }
-]
+# Função de validação personalizada (PARÂMETRO DO USUÁRIO)
+def restricao_estrelas(valor):
+    valor = float(valor)
+    if valor < 0.0 or valor > 5.0:  # Defina o valor mínimo e máximo aqui
+        raise (f"Valor deve estar entre 0.0 e 5.0. Recebido: {valor}")
+    return valor
 
-# rota ler (dados hoteis)
+# Função de validação personalizada (PARÂMETRO DO USUÁRIO)
+def restricao_diaria(valor):
+    valor = float(valor)
+    if valor < 0.0:  # Defina o valor mínimo e máximo aqui
+        raise (f"Valor deve ser maior que 0: {valor}")
+    return valor
+
+# rota lista Banco de Dados (TUDO)
 class Hoteis(Resource):
-    # Solicitar
+    # (Ler)
     def get(self):
-        return {'hoteis': hoteis} # lista (dados hoteis) 
+        # {'hoteis': [(MÉTODO AUXILIAR JSON) for hotel in (ESCOPO BANCO DE DADOS.filtra_todos)]}
+        return {'hoteis': [hotel.json() for hotel in HotelModel.query.all()]}, 200
 
 # rota (CRUD)
 class Hotel(Resource):
+    # PARÂMETRO DO USUÁRIO
+    atributos = reqparse.RequestParser() # parâmetros pre-definidos (argumentos)
+    atributos.add_argument('nome', type=str, required=True, help="Falta nome") # argumentos (required=True | campo obrigatório)
+    atributos.add_argument('estrelas', type=restricao_estrelas, help="Número de estrelas (entre 0.0 e 5.0)") # argumentos
+    atributos.add_argument('diaria', type=restricao_diaria, help="Valor da diaria não pode ser negativo") # argumentos
+    atributos.add_argument('cidade', type=str, required=True, help="cidade") # argumentos
 
-    # Dados pre definidos (Construtor Local)
-    atributos = reqparse.RequestParser() # requerimento (extrair valores)
-    atributos.add_argument('nome', type=str, required=True, help='Campo nome obrigatório') # extrair atributo de nome 'nome'
-    atributos.add_argument('estrelas') # extrair atributo de nome 'estrelas'
-    atributos.add_argument('diaria') # extrair atributo de nome 'diaria'
-    atributos.add_argument('cidade') # extrair atributo de nome 'cidade'
-
-    # Função auxiliar (Filtro)
-    def find_hotel(hotel_id):
-        for hotel in hoteis:
-            if hotel['hotel_id'] == hotel_id:
-                return hotel
-        return False
-    
     # Solicitar (leitura) por "id"
-    def get(self, hotel_id): 
-        # hotel = (Construtor Local).(Filtro (pesquisa por ID)) 
-        hotel = Hotel.find_hotel(hotel_id) 
+    def get(self, hotel_id):
+        # hotel = (ESCOPO BANCO DE DADOS).(método filtro (pesquisa por ID)).(retornar 1º resultado)
+        hotel = HotelModel.query.filter_by(hotel_id=hotel_id).first()
 
         if hotel:
-            return hotel
+            # (ESCOPO BANCO DE DADOS).(MÉTODO AUXILIAR JSON)
+            return hotel.json()   
         else:
-            return {'message': 'Hotel não existe.'}, 404
-    
+            return {'mensagem': 'Hotel não existe.'}, 404
+
     # Enviar (criar)
-    def post(self, hotel_id):    
-        # dados = (Construtor Local).(argumentos).(extrair valores)
-        dados = Hotel.atributos.parse_args()
+    def post(self, hotel_id): 
+        # hotel = (ESCOPO BANCO DE DADOS).(método filtro (pesquisa por ID)).(retornar 1º resultado)
+        hotel = HotelModel.query.filter_by(hotel_id=hotel_id).first()
 
-        # novo_hotel = {hotel_id, (Construtor Local)}
-        novo_hotel = {'hotel_id': hotel_id, **dados}
-        # ========================= ou ===========================
-        # novo_hotel = {
-        #     'hotel_id': hotel_id, # envio pelo header do POST
-        #     'nome': dados['nome'],
-        #     'estrelas': dados['estrelas'],
-        #     'diaria': dados['diaria'],
-        #     'cidade': dados['cidade']
-        # }
-        # ========================================================
-
-        # hotel = (Construtor Local).(Filtro (pesquisa por ID))
-        hotel = Hotel.find_hotel(hotel_id) # retorna alguma coisa ou falso
-
-        # Se ID não existir
-        if not hotel:
-            hoteis.append(novo_hotel)  # Adicionar na lista (dados hoteis)
-            return novo_hotel, 201
-        else:
-            return {'message': 'Hotel já existe.'}, 400
-
-    # Atualizar (alterar)
-    def put(self, hotel_id):
-        # dados = (Construtor Local).(Filtro (pesquisa por ID))
-        dados = Hotel.atributos.parse_args()
-
-        # novo_hotel = {hotel_id, (Construtor Local)}
-        novo_hotel = {'hotel_id': hotel_id, **dados}
-        
-        # (Construtor Local).(Filtro (pesquisa por ID))
-        hotel = Hotel.find_hotel(hotel_id) # retorna alguma coisa ou falso
-        
         # Se ID existir
         if hotel:
-            hotel.update(novo_hotel) # Alterar lista (dados hoteis)
-            return hotel, 200
-        else:
-            hoteis.append(novo_hotel) # Adicionar lista (dados hoteis)
-            return novo_hotel, 201
+            return {f'mensagem': 'Hotel {hotel_id} já existe.'}, 500
+        else:     
+            # dados = (PARÂMETRO DO USUÁRIO).(argumentos).(extrair dados)
+            dados = Hotel.atributos.parse_args() 
 
-    # Excluir 
+            # novo_hotel = (ESCOPO BANCO DE DADOS (hotel_id, (PARÂMETRO DO USUÁRIO))
+            novo_hotel = HotelModel(hotel_id, **dados) # >>>>> (MÉTODO AUXILIAR CONSTRUTOR) <<<<<
+
+            # (ESCOPO BANCO DE DADOS).(método salvar dados)
+            banco.session.add(novo_hotel)
+            banco.session.commit() 
+
+            # (ESCOPO BANCO DE DADOS).(MÉTODO AUXILIAR JSON)
+            return novo_hotel.json(), 201     
+
+    # Atualizar
+    def put(self, hotel_id):
+        # dados = (PARÂMETRO DO USUÁRIO).(argumentos).(extrair dados)
+        dados = Hotel.atributos.parse_args()
+
+        # hotel = (ESCOPO BANCO DE DADOS).(método filtro (pesquisa por ID)).(retornar 1º resultado)
+        hotel = HotelModel.query.filter_by(hotel_id=hotel_id).first()
+
+        # Se ID existir
+        if hotel:
+            # Atualizar os atributos do hotel
+            hotel.nome = dados['nome']
+            hotel.estrelas = dados['estrelas']
+            hotel.diaria = dados['diaria']
+            hotel.cidade = dados['cidade']
+
+            # (ESCOPO BANCO DE DADOS).(método salvar dados)
+            banco.session.add(hotel)
+            banco.session.commit() 
+
+            # (ESCOPO BANCO DE DADOS).(MÉTODO AUXILIAR JSON)
+            return hotel.json(), 201       
+        else:
+            # novo_hotel = (ESCOPO BANCO DE DADOS (hotel_id, (PARÂMETRO DO USUÁRIO))
+            novo_hotel = HotelModel(hotel_id, **dados) # >>>>> MÉTODO AUXILIAR CONSTRUTOR <<<<<   
+            
+            # (ESCOPO BANCO DE DADOS).(método salvar dados)
+            banco.session.add(novo_hotel)
+            banco.session.commit() 
+
+            # (ESCOPO BANCO DE DADOS).(MÉTODO AUXILIAR JSON)
+            return novo_hotel.json(), 201
+        
+    # Excluir
     def delete(self, hotel_id):
 
-        # hotel = (Construtor Local).(Filtro (pesquisa por ID)) 
-        hotel = Hotel.find_hotel(hotel_id) # retorna alguma coisa ou falso
-
-        # (dados hoteis)
-        global hoteis
-
-        # cria uma nova lista de hoteis excluindo o ID informado
-        hoteis = [hotel for hotel in hoteis if hotel['hotel_id'] != hotel_id]
+        # hotel = (ESCOPO BANCO DE DADOS).(método filtro (pesquisa por ID)).(retornar 1º resultado)
+        hotel = HotelModel.query.filter_by(hotel_id=hotel_id).first()
 
         # Se ID existir
         if hotel:
-            return {'message': 'Hotel deletado.'}, 204
+            # (ESCOPO BANCO DE DADOS).(método delete)
+            banco.session.delete(hotel)
+            banco.session.commit()
+            return {'mensagem': 'Hotel deletado.'}, 201  
         else:
-            return {'message': 'Hotel não existe.'}, 400
+            return {'mensagem': 'Hotel não existe.'}, 404
+        
+  

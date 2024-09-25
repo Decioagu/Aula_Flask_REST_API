@@ -1,6 +1,6 @@
-from sql_alchemy import banco
+from config.sql_alchemy import banco
 
-# atributos a ser enviados
+# modelo: gerenciamento e validação de dados
 class HotelModel(banco.Model):
     # ESCOPO Banco de Dados
     __tablename__ = 'hoteis'
@@ -9,21 +9,10 @@ class HotelModel(banco.Model):
     estrelas = banco.Column(banco.Float(precision=1))
     diaria = banco.Column(banco.Float(precision=2))
     cidade = banco.Column(banco.String(40))
-    site_id = banco.Column(banco.Integer, banco.ForeignKey('site.site_id'))  # Chave estrangeira
-    site = banco.relationship('SiteModel', back_populates='hoteis')  # Relacionamento reverso
     '''
-    relationship: é uma função do SQLAlchemy que é usada para definir uma relação entre duas tabelas.
-    back_populates='__tablename__': Este parâmetro é usado para definir a relação bidirecional.
+    O argumento precision=1 define a precisão de número de ponto flutuante em 
+    casa decimais que serão armazenadas. Neste caso uma casa decimal: exp: 1.0
     '''
-
-    # ESCOPO Flask
-    def __init__(self, hotel_id, nome, estrelas, diaria, cidade, site_id):
-        self.hotel_id = hotel_id
-        self.nome = nome
-        self.estrelas = estrelas
-        self.diaria = diaria
-        self.cidade = cidade
-        self.site_id = site_id # Chave estrangeira
 
     # método json
     def json(self):
@@ -32,9 +21,16 @@ class HotelModel(banco.Model):
             'nome': self.nome,
             'estrelas': self.estrelas,
             'diaria': self.diaria,
-            'cidade': self.cidade,
-            'site_id' : self.site_id # Chave estrangeira
+            'cidade': self.cidade
         }
+
+    # ESCOPO Flask
+    def __init__(self, hotel_id, nome, estrelas, diaria, cidade):
+        self.hotel_id = hotel_id
+        self.nome = nome
+        self.estrelas = estrelas
+        self.diaria = diaria
+        self.cidade = cidade
     
     # método filtro
     @classmethod # recebe a própria como argumento "cls"
@@ -54,12 +50,11 @@ class HotelModel(banco.Model):
         banco.session.commit()
 
     # método atualizar
-    def update_hotel(self, nome, estrelas, diaria, cidade, site_id):
+    def update_hotel(self, nome, estrelas, diaria, cidade):
         self.nome = nome
         self.estrelas = estrelas
         self.diaria = diaria
         self.cidade = cidade
-        self.site_id = site_id # Chave estrangeira
 
     # método delete
     def delete_hotel(self):

@@ -16,8 +16,8 @@ class Hoteis(Resource):
     path_params.add_argument('diaria_min', type=float, default=0, location='args') # argumentos
     path_params.add_argument('diaria_max', type=float, default=0, location='args') # argumentos
     path_params.add_argument("site", type=float, default=None , location="args") # argumentos
-    path_params.add_argument("itens", type=float, default=3, location="args") # argumentos
-    path_params.add_argument("pagina", type=float, default=1, location="args") # argumentos
+    path_params.add_argument("itens", type=int, default=3, location="args") # argumentos
+    path_params.add_argument("pagina", type=int, default=1, location="args") # argumentos
     
     '''
     location='args': Indica que o argumento deve ser extraído dos parâmetros da ".query" na URL. 
@@ -50,8 +50,6 @@ class Hoteis(Resource):
             query = query.filter(HotelModel.diaria <= meus_filtros["diaria_max"])
         if meus_filtros["site"]:
             query = query.filter(HotelModel.site_id == meus_filtros["site"])
-        if meus_filtros["itens"]:
-            query = query.filter(meus_filtros["itens"] == meus_filtros["itens"])
         
         # Paginação
         page = meus_filtros['pagina']
@@ -63,9 +61,9 @@ class Hoteis(Resource):
 
         return {
             "hotéis": resultado_hotel,
-            "quantidade de itens": pagination.total,
-            "quantidade de paginas": pagination.pages,
-            "pagina atual": int(page)
+            "quantidade de itens": pagination.total, #
+            "quantidade de paginas": pagination.pages, # 
+            "pagina atual": page
         }
 
 # rota (CRUD)
@@ -97,7 +95,7 @@ class Hotel(Resource):
 
         # Se ID existir
         if hotel:
-            return {f'mensagem': 'Hotel {hotel_id} já existe.'}, 500
+            return {f'mensagem': 'Hotel {} já existe.'.format(hotel_id)}, 500
         else:     
             # dados = (Construtor Local).(argumentos).(extrair dados)
             dados = Hotel.atributos.parse_args() 

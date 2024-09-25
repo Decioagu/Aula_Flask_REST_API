@@ -16,20 +16,14 @@
 
 **Aula_02**
 
-- __Resources__ (recursos): é a base da arquitetura RESTful, que organiza a API em torno de recursos interligados, acesso aos dados por meio de métodos, __regras de negocio__.
+- __Resources__ (recursos): são recursos de acesso aos dados por meio de métodos, __regras de negocio__.
+
+- __Models__ (modelos): gerencia e valida dados que transitam entre API e Banco de Dados, por meio de solicitação de usuário, permitindo apenas saída e entrada de dados definidos no modelo.
 ---
 
 **Aula_03**
 
-- __Models__ (modelos): servem como base para definir e gerenciar os dados que fluem através da API, __modelagem de objetos__ (colunas da tabela).
----
-
-**Aula_03.1**
-
-- Uso de __Resources__ (recursos) e __Models__ (modelos)
----
-
-**Aula_04**
+- __>>> ATUALIZADO <<<__
 
 - __PROJETO HOTEL__
 
@@ -37,7 +31,7 @@
 
 - Arquivos: 
     - __.\models\hotel.py__: (modelos)
-    - __.\resources\hotel.py__: CRUD hotel
+    - __.\resources\hotel.py__: (recursos) => CRUD hotel
     - __app.py__: rotas
     - __config_DB.py__: configuração Banco de Dados em __SQLAlchemy__
     - __sql_alchemy.py__: ORM (Object Relational Mapping) => conexão para Banco de Dados <=
@@ -59,7 +53,7 @@
     - =====> Inserir  |  Selecionar  |  Atualizar  |  Excluir
 ---
 
-**Aula_05**
+**Aula_04**
 
 - __PROJETO HOTEL__
 
@@ -74,7 +68,24 @@
 - A autenticação __JWT__ (JSON Web Token) é uma técnica amplamente usada para autenticar usuários em aplicações web, incluindo APIs construídas com Flask. A ideia principal é fornecer uma maneira segura e eficiente de transmitir informações de autenticação entre o cliente (por exemplo, um navegador ou um aplicativo móvel) e o servidor.
 ---
 
-**Aula_06**
+**Aula_04.1**
+
+- Organização por pasta:
+    - __config__:
+        - blacklist.py
+        - config_DB.py
+        - sql_alchemy.py
+    - __models__:
+        - hotel.py
+        - usuario.py
+    - __resouces__:
+        - hotel.py
+        - usuario.py
+    - app.py
+    - banco.db
+---
+
+**Aula_05**
 
 - __PROJETO HOTEL__
 
@@ -88,7 +99,7 @@
     - __URL: /hoteis?cidade=Rio de Janeiro&estrelas_min=4&diaria_max=400__
 ---
 
-**Aula_07**
+**Aula_06**
 
 - __PROJETO HOTEL__
 
@@ -100,9 +111,12 @@
     - __app.py__: novas rotas
 
 - Relacionamento entre tabelas __.\models\site.py__ e __.\models\hotel.py__.
+    - relationship: é uma função do SQLAlchemy que é usada para definir uma relação entre duas tabelas.
+        - back_populates='__tablename__': Este parâmetro é usado para definir a relação bidirecional.
+        - lazy='dynamic': Não carrega imediatamente os dados relacionados. Em vez disso, retorna um objeto Query, que permite realizar consultas adicionais sobre os dados relacionados. (possibilita consultas com filtro ou paginação)
 ---
 
-**Aula_08**
+**Aula_07**
 
 - __PROJETO HOTEL__
 
@@ -113,6 +127,12 @@
     - __.\templates\user_confirm.html__: mensagem em HTML de confirmação de email
 
 - Implementado método de ativação de cadastro via e-mail e mensagem de confirmação.
+---
+
+**HOTEL**
+
+- __PROJETO HOTEL__
+    - Modelo de estudo para projetos futuros modelado e devidamente comentado.
 ---
 
 **MAILGUN**

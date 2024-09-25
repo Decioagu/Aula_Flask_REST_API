@@ -8,4 +8,5 @@ um conector entre seu aplicativo Flask e o banco de dados.
 
 pip install Flask-SQLAlchemy
 '''
-banco = SQLAlchemy() # ORM (Object Relational Mapping)
+# ORM (Object-Relational Mapping)
+banco = SQLAlchemy()
