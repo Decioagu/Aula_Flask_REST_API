@@ -132,7 +132,7 @@
 **HOTEL**
 
 - __PROJETO HOTEL__
-    - Modelo de estudo para projetos futuros modelado e devidamente comentado.
+    - Modelo de estudo para projetos futuros devidamente comentado.
 ---
 
 **MAILGUN**
