@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from resources.site import Sites, Site # resources
-from config.blacklist import BLACKLIST # invalidar determinados tokens JWT
+from config.blacklist import BLACKLIST # config (invalidar determinados tokens JWT)
 from resources.hotel import Hoteis, Hotel # resources
 from resources.usuario import Usuario, Usuarios, CadastroUsuario, UsuarioLogin, UsuarioLogout, UsuarioAtivacao # resources
 from config.config_DB import Config # config

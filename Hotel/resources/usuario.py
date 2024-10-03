@@ -14,7 +14,7 @@ atributos.add_argument('senha', type=str, required=True, help='Campo senha obrig
 atributos.add_argument('email', type=str) # argumentos
 atributos.add_argument('ativado', type=bool) # argumentos
 
-# rota (APENAS PARA DESENVOLVIMENTO <= EXCLUIR)
+# rota (APENAS PARA FINS DIÁDICO MÉTODO <= EXCLUIR)
 class Usuarios(Resource):
     # método de (Leitura)
     def get(self):

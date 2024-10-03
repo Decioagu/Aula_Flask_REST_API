@@ -31,7 +31,7 @@ class UsuarioModel(banco.Model):
             'ativado' : self.ativado 
         }
     
-    # (APENAS PARA DESENVOLVIMENTO <= EXCLUIR)
+    # (APENAS PARA FINS DIÁDICO MÉTODO <= EXCLUIR)
     def json_senha(self):
         return {
             'usuario_id': self.usuario_id,

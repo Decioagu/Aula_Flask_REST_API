@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import Resource # acesso ao (GET, POST, PUT, DELETE)
 from models.site import SiteModel # models
 from models.hotel import HotelModel # models
 from config.sql_alchemy import banco # ORM (Object-Relational Mapping)
