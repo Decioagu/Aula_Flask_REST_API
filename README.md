@@ -14,6 +14,8 @@
 - __O Flask__ é um __microframework__ para __desenvolvimento web__ escrito em Python. É conhecido pela sua simplicidade e flexibilidade, possibilitando a criação de sites, aplicativos web e APIs de forma rápida e eficiente.
 
 - __Rotas__ de acesso são como os endereços específicos que você usa para acessar diferentes recursos
+
+- OBS: para sair do serviço pressione __Ctrl+C__ 
 ---
 
 **Aula_02**
