@@ -241,6 +241,6 @@ Onde:
 - Arquivo __.env__ armazena variáveis de ambiente em um formato de texto simples (segurança de informações sensíveis)
 ---
 
-**documentos**
+**DOCUMENTOS_EM_PDF**
 - Arquivos em PDF sobre REST APIS.
 ---
