@@ -91,8 +91,8 @@ class Hotel(Resource):
     # PARÂMETRO DO USUÁRIO (Construtor Local)
     atributos = reqparse.RequestParser() # parâmetros pre-definidos (argumentos)
     atributos.add_argument('nome', type=str, required=True, help="Falta nome")  # argumentos (required=True | campo obrigatório)
-    atributos.add_argument('estrelas', type=restricao_estrelas, help="Número de estrelas (entre 0.0 e 5.0)") # argumentos
-    atributos.add_argument('diaria', type=restricao_diaria, help="Valor da diaria não pode ser negativo") # argumentos
+    atributos.add_argument('estrelas', type=restricao_estrelas, help="Número de estrelas (entre 0.0 e 5.0)") ### argumentos
+    atributos.add_argument('diaria', type=restricao_diaria, help="Valor da diaria não pode ser negativo") ### argumentos
     atributos.add_argument('cidade', type=str, required=True, help="cidade") # argumentos
     atributos.add_argument('site_id', type=int, required=True, help="Falta id do site")  # argumentos (required=True | campo obrigatório)
 
@@ -152,7 +152,7 @@ class Hotel(Resource):
         ### hotel = (ESCOPO BANCO DE DADOS).(método filtro (pesquisa por ID)).(encontrar o 1º)
         hotel = HotelModel.query.filter_by(hotel_id=hotel_id).first()
 
-        # Se ID existir
+        # Se ID existir: Atualizar hotel
         if hotel:
 
              # SE não existir site_id cadastrado finalize
@@ -173,8 +173,8 @@ class Hotel(Resource):
 
             # (ESCOPO BANCO DE DADOS).(MÉTODO AUXILIAR JSON)
             return hotel.json(), 200        
-        else:
-            # novo_hotel = (ESCOPO Flask (hotel_id, (Construtor Local))
+        else: # Criar novo hotel
+            # novo_hotel = (ESCOPO BANCO DE DADOS (hotel_id, (Construtor Local))
             novo_hotel = HotelModel(hotel_id, **dados) # >>>>> preencher dados no Banco de Dabos => (MÉTODO AUXILIAR CONSTRUTOR) <<<<<   
 
             ### SE não existir site_id cadastrado finalize

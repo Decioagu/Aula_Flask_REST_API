@@ -21,5 +21,7 @@ def envio_de_email():
                         }
                         )
 
+envio_de_email()
+print('Email enviado...')
 
 # https://www.udemy.com/course/rest-apis-com-python-e-flask/learn/lecture/14429186#questions/22122617

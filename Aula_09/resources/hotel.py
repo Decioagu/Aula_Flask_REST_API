@@ -2,7 +2,21 @@ from flask_restful import Resource, reqparse
 from models.site import SiteModel
 from models.hotel import HotelModel
 from flask_jwt_extended import jwt_required
+import traceback ### informações detalhadas sobre uma exceção
 
+### Função de validação personalizada (PARÂMETRO DO USUÁRIO)
+def restricao_estrelas(valor):
+    valor = float(valor)
+    if valor < 0.0 or valor > 5.0:  # Defina o valor mínimo e máximo aqui
+        raise (f"Valor deve estar entre 0.0 e 5.0. Recebido: {valor}")
+    return valor
+
+### Função de validação personalizada (PARÂMETRO DO USUÁRIO)
+def restricao_diaria(valor):
+    valor = float(valor)
+    if valor < 0.0:  # Defina o valor mínimo e máximo aqui
+        raise (f"Valor deve ser maior que 0: {valor}")
+    return valor
 
 # rota lista Banco de Dados (TUDO): URL/hoteis?cidade=Rio de Janeiro&estrelas_min=4&diaria_max=400
 class Hoteis(Resource):
@@ -74,13 +88,12 @@ class Hoteis(Resource):
 # rota (CRUD)
 class Hotel(Resource):
     # Dados pre definidos (Construtor Local)
-    atributos = reqparse.RequestParser() # requerimento (extrair dados)
-    # extrair atributo de nome 'nome' (campo obrigatório)
-    atributos.add_argument('nome', type=str, required=True, help="Falta nome")
-    atributos.add_argument('estrelas') # extrair atributo de nome 'estrelas'
-    atributos.add_argument('diaria') # extrair atributo de nome 'diaria'
-    atributos.add_argument('cidade') # extrair atributo de nome 'cidade'
-    atributos.add_argument('site_id', type=int, required=True, help="Falta id do site") ### argumentos (campo obrigatório)
+    atributos = reqparse.RequestParser() # parâmetros pre-definidos (argumentos)
+    atributos.add_argument('nome', type=str, required=True, help="Falta nome")  # argumentos (required=True | campo obrigatório)
+    atributos.add_argument('estrelas', type=restricao_estrelas, help="Número de estrelas (entre 0.0 e 5.0)") ### argumentos
+    atributos.add_argument('diaria', type=restricao_diaria, help="Valor da diaria não pode ser negativo") ### argumentos
+    atributos.add_argument('cidade', type=str, required=True, help="cidade") # argumentos
+    atributos.add_argument('site_id', type=int, required=True, help="Falta id do site")  # argumentos (required=True | campo obrigatório)
 
 
     # Solicitar (leitura) por "id"
@@ -110,7 +123,7 @@ class Hotel(Resource):
             # novo_hotel = (ESCOPO Flask (hotel_id, (Construtor Local))
             novo_hotel = HotelModel(hotel_id, **dados)
 
-            ### SE não existir site_id cadastrado finalize
+            # SE não existir site_id cadastrado finalize
             if not SiteModel.filtro_por_site_id(novo_hotel.site_id):
                 return {'mensagem': 'Para cadastra hotel é necessário site_id valido'}, 400
 
@@ -132,7 +145,7 @@ class Hotel(Resource):
         # Se ID existir
         if hotel:
 
-            ### SE não existir site_id cadastrado finalize
+            # SE não existir site_id cadastrado finalize
             if not SiteModel.filtro_por_site_id(dados.get('site_id')):
                 return {'mensagem': 'Para cadastra hotel é necessário site_id valido'}, 400
 
@@ -148,7 +161,7 @@ class Hotel(Resource):
             # novo_hotel = (ESCOPO Flask (hotel_id, (Construtor Local))
             novo_hotel = HotelModel(hotel_id, **dados)    
 
-            ### SE não existir site_id cadastrado finalize
+            # SE não existir site_id cadastrado finalize
             if not SiteModel.filtro_por_site_id(novo_hotel.site_id):
                 return {'mensagem': 'Para cadastra hotel é necessário site_id valido'}, 400
             

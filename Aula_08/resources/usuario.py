@@ -93,6 +93,8 @@ class UsuarioLogin(Resource):
         # (ESCOPO Flask).(método login)(Construtor Global)
         usuario = UsuarioModel.filtro_login_do_usuario(dados['login'])
 
+        print(usuario)
+
         ###  compare_digest() => realizar comparações seguras de strings
         if usuario and compare_digest(usuario.senha, dados['senha']):
             if usuario.ativado: ###

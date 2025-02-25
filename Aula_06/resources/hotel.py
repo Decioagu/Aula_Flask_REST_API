@@ -95,7 +95,7 @@ class Hotel(Resource):
 
         # Se ID existir
         if hotel:
-            return {f'mensagem': 'Hotel {hotel_id} já existe.'}, 404
+            return {'mensagem': 'Hotel {} já existe.'.format(hotel_id)}, 404
         else:     
             # dados = (Construtor Local).(argumentos).(extrair dados)
             dados = Hotel.atributos.parse_args() 

@@ -16,8 +16,8 @@ class UsuarioModel(banco.Model):
     # ESCOPO Banco de Dados (cls)
     __tablename__ = 'usuarios'
     usuario_id = banco.Column(banco.Integer, primary_key = True, autoincrement=True) # id auto incremento
-    login = banco.Column(banco.String(40))
-    senha = banco.Column(banco.String(40))
+    login = banco.Column(banco.String(40), nullable=False)
+    senha = banco.Column(banco.String(40), nullable=False)
     email = banco.Column(banco.String(80), nullable=False, unique=True) ### e-mail
     ativado =  banco.Column(banco.Boolean, default=False) ### ativação por e-mail
     '''banco.Model é equivalente a declarative_base() do SQLAlchemy'''

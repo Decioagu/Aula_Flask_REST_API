@@ -5,7 +5,7 @@ class SiteModel(banco.Model):
     # ESCOPO Banco de Dados
     __tablename__ = 'site'
     site_id = banco.Column(banco.Integer, primary_key = True) # id auto incrementado
-    url = banco.Column(banco.String(80)) # endereço
+    url = banco.Column(banco.String(80), nullable=False) # endereço
     hoteis = banco.relationship('HotelModel', back_populates='site', lazy='dynamic') # Relacionamento reverso
     '''
     relationship: é uma função do SQLAlchemy que é usada para definir uma relação entre duas tabelas.

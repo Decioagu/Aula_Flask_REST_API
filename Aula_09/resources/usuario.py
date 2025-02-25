@@ -4,14 +4,14 @@ from flask_restful import Resource, reqparse
 from blacklist import BLACKLIST
 from models.usuario import UsuarioModel
 import traceback ### imprimir o rastreamento completo do erro.
-from flask import make_response, render_template ###
+from flask import make_response, render_template 
 
 # Dados pre definidos (Construtor Global)
 atributos = reqparse.RequestParser()
 atributos.add_argument('login', type=str, required=True, help='Campo login obrigatório')
 atributos.add_argument('senha', type=str, required=True, help='Campo senha obrigatório')
-atributos.add_argument('email', type=str) ###
-atributos.add_argument('ativado', type=bool) ###
+atributos.add_argument('email', type=str) 
+atributos.add_argument('ativado', type=bool) 
 
 # rotas (CRUD)
 
@@ -23,31 +23,35 @@ class CadastroUsuario(Resource):
         # dados = (Construtor Global).(extrair dados)
         dados = atributos.parse_args()
 
-        ### (Construtor Global). email
+        # (Construtor Global). email
         if not dados.get('email') or dados.get('email') is None:
             return {'mensagem': 'email não pode ser deixado em branco.'}, 400
         
-        ### (ESCOPO Flask).(método email)(Construtor Global)
+        ### (Construtor Global). email  (validação personalizada)
+        if not '@' in dados.get('email'):
+            return {'mensagem': "É obrigatório @ no endereço de e-mail."}, 400
+        
+        # (ESCOPO Flask).(método email)(Construtor Global)
         if UsuarioModel.filtro_por_email(dados['email']):
             return {"mensagem": "E-mail '{}' já existe!!!".format(dados['email'])}, 400
         
-        ### (ESCOPO Flask).(método login)(Construtor Global)
+        # (ESCOPO Flask).(método login)(Construtor Global)
         if UsuarioModel.filtro_login_do_usuario(dados['login']):
             return {"mensagem": "Login '{}' já existe!!!".format(dados['login'])}, 400
         else: 
             usuario = UsuarioModel(**dados)
-            usuario.ativado = False ###
+            usuario.ativado = False #
             try:
                 usuario.save_usuario()
-                usuario.envio_de_email() ###
+                usuario.envio_de_email() #
             except:
-                usuario.delete_usuario() ###
+                usuario.delete_usuario() #
                 '''
                 traceback.print_exc() é uma função em Python usada para 
                 imprimir informações detalhadas sobre uma exceção.
                 '''
-                traceback.print_exc() ###
-                return {'mensagem': 'Ocorreu erro interno no servidor.'}, 500 ###
+                traceback.print_exc() #
+                return {'mensagem': 'Ocorreu erro interno no servidor.'}, 500 #
             return {f"mensagem": "Usuário criado com sucesso!!!"}, 201
         
 # rota usuário (buscar, excluir)
@@ -88,24 +92,22 @@ class UsuarioLogin(Resource):
         # dados = (Construtor Global).(extrair dados)
         dados = atributos.parse_args()
 
-        print('===================>',dados)
-
         # (ESCOPO Flask).(método login)(Construtor Global)
         usuario = UsuarioModel.filtro_login_do_usuario(dados['login'])
 
-        ###  compare_digest() => realizar comparações seguras de strings
+        #  compare_digest() => realizar comparações seguras de strings
         if usuario and compare_digest(usuario.senha, dados['senha']):
-            if usuario.ativado: ###
+            if usuario.ativado: #
                 # create_access_token() => usado em sistema de autenticação e autorização
                 token_de_acesso = create_access_token(identity=str(usuario.usuario_id))
                 '''OBS: "identity" dentro do token JWT deve ser uma string'''
                 return {'acesso token': token_de_acesso}, 200
             else:
-                return {'mensagem': 'Usuário não ativo.'}, 400 ###
+                return {'mensagem': 'Usuário não ativo.'}, 400 #
         return {'mensagem': 'Usuário ou senha errado.'}, 401 # Unauthorized
 
 # rota logout
-class UsuarioLogout(Resource): ###
+class UsuarioLogout(Resource): #
 
     @jwt_required()
     def post(self):
@@ -113,7 +115,7 @@ class UsuarioLogout(Resource): ###
         BLACKLIST.add(jwt_id) # lista de token invalido apos "saída de login" 
         return {'mensagem' : 'Saiu do login com sucesso!!!'}, 200
 
-### rota ativação de cadastro
+# rota ativação de cadastro
 class UsuarioAtivacao(Resource):
     @ classmethod
     def get(cls, usuario_id):

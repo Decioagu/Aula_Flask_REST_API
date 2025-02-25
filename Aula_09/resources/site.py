@@ -25,8 +25,13 @@ class Site(Resource):
     def post(self, url):
         # site = (ESCOPO Flask).(método filtro (pesquisa por "url"))
         site = SiteModel.filtro_por_id_URL(url)
+
         if site:
             return {'mensagem': 'Site já existe'}, 400
+        
+        ### (validação personalizada)
+        if not 'www.' in url:
+            return {'mensagem': "Favor inserir endereço valido iniciando com (www.)"}, 400
         else:
             # acesso ao banco de dados com "url"
             novo_site = SiteModel(url)

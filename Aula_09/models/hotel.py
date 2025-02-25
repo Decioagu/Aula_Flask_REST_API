@@ -5,11 +5,11 @@ class HotelModel(banco.Model):
     # ESCOPO Banco de Dados
     __tablename__ = 'hoteis'
     hotel_id = banco.Column(banco.String, primary_key = True) # id str via Hesders
-    nome = banco.Column(banco.String(80))
-    estrelas = banco.Column(banco.Float(precision=1))
-    diaria = banco.Column(banco.Float(precision=2))
-    cidade = banco.Column(banco.String(40))
-    site_id = banco.Column(banco.Integer, banco.ForeignKey('site.site_id'))  ### Chave estrangeira
+    nome = banco.Column(banco.String(80), nullable=False)
+    estrelas = banco.Column(banco.Float(precision=1), nullable=False)
+    diaria = banco.Column(banco.Float(precision=2), nullable=False)
+    cidade = banco.Column(banco.String(40), nullable=False)
+    site_id = banco.Column(banco.Integer, banco.ForeignKey('site.site_id'), nullable=False)  ### Chave estrangeira
     site = banco.relationship('SiteModel', back_populates='hoteis')  # Relacionamento reverso
     '''
     O argumento precision=1 define a precisão de número de ponto flutuante em 
