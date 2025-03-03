@@ -39,16 +39,16 @@ def index():
 
 # rotas
 api.add_resource(Hoteis, '/hoteis') # acessar cadastro do hoteis 
-api.add_resource(Hotel, '/hoteis/<string:hotel_id>') # cadastro do hoteis
+api.add_resource(Hotel, '/hotel/<string:hotel_id>') # cadastro do hoteis
 api.add_resource(Usuario, '/usuarios/<int:usuario_id>') # cadastro do usuário
-api.add_resource(CadastroUsuario, '/cadastro') # cadastrar usuário
-api.add_resource(UsuarioLogin, '/login') # acessar cadastro do usuário
-api.add_resource(UsuarioLogout, '/logout') # sair cadastro do usuário
+api.add_resource(CadastroUsuario, '/cadastro_usuario') # cadastrar usuário
+api.add_resource(UsuarioLogin, '/login_usuario') # acessar cadastro do usuário
+api.add_resource(UsuarioLogout, '/logout_usuario') # sair cadastro do usuário
 api.add_resource(Sites, '/sites') # acessar cadastro do site
 api.add_resource(Site, '/sites/<string:url>') # cadastrar site
 # ----------------------------- (p/ fins diádicos) ------------------------------
-api.add_resource(Usuarios_senha, '/usuarios_senha/') # cadastro do usuário
-api.add_resource(UsuarioAtivacao, '/ativacao/<int:usuario_id>') ### ativar usuário cadastrado
+api.add_resource(Usuarios_senha, '/senha_usuarios/') # cadastro do usuário
+api.add_resource(UsuarioAtivacao, '/ativacao_usuario/<int:usuario_id>') ### ativar usuário cadastrado
 # -------------------------------------------------------------------------------
 # execução arquivo principal
 if __name__ == '__main__':
