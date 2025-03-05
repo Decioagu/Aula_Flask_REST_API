@@ -1,6 +1,11 @@
 # Aula_Flask_REST_API
  REST APIs com Python e Flask
 
+**Aula_EXTRA**
+
+ - "__Aula_EXTRA__" resumo das aulas: Aula_01, Aula_02 e Aula_03.
+---
+
  **Aula_01**
 
  - __PROJETO HOTEL: Flask__

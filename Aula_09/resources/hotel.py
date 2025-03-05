@@ -131,7 +131,7 @@ class Hotel(Resource):
             novo_hotel.save_hotel() 
 
             # (ESCOPO Flask).(método json)
-            return novo_hotel.json()
+            return novo_hotel.json(), 201
             
     # Atualizar
     @jwt_required() # necessário token de acesso
