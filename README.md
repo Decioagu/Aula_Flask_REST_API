@@ -39,6 +39,8 @@
     - __app.py__: (rota) =>  hoteis
     - __dados_hoteis.py__: armazenamento lista de hotéis "Banco de dados"
 
+- O CRUD é o fundamento da persistência de dados, toda aplicação que **cria**, **lê**, **atualiza** ou **exclui** informações (em um BANCO DE DADOS ou API) está implementando é um CRUD.
+
 - __.\resources\hotel.py__:
     - __CRUD__:
         - CRUD - CREATE   |  READ        |  UPDATE     |  DELETE
